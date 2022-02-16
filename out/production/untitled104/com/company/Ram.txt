@@ -1,0 +1,43 @@
+public class Main {
+    static int diskNum;
+
+    public static void main(String[] args) {
+        Scanner scanner1 = new Scanner(System.in);
+        diskNum = scanner1.nextInt();
+        //----Start----
+        int[][] gridTable = new int[3][diskNum + 2];
+        for (int i = 1; i < diskNum + 1; i++) {
+            gridTable[0][i] = diskNum + 1 - i;
+        }
+        gridTable[0][0] = diskNum;
+        //-------------
+        MovDiskPile(1, 0, 2, gridTable);
+    }
+
+    static void MovDiskPile(int ptrDiskLv, int nowPole, int ptrPole, int[][] gridTable) {
+        int index = 3;
+        index -= nowPole + ptrPole;
+        if (gridTable[nowPole][ptrDiskLv + 1] == 0) {
+            MovDisk(ptrDiskLv, nowPole, ptrPole, gridTable);
+            PrnTo(gridTable);
+        } else {
+            int temLv = gridTable[index][0];
+            MovDiskPile(ptrDiskLv + 1, nowPole, index, gridTable);
+            MovDisk(ptrDiskLv, nowPole, ptrPole, gridTable);
+            PrnTo(gridTable);
+            MovDiskPile(temLv + 1, index, ptrPole, gridTable);
+        }
+    }
+
+    static void MovDisk(int ptrDiskLv, int nowPole, int ptrPole, int[][] gridTable) {
+        int temId = gridTable[nowPole][ptrDiskLv];
+        gridTable[nowPole][ptrDiskLv] = 0;
+        gridTable[nowPole][0]--;
+        int temLv = ++gridTable[ptrPole][0];
+        gridTable[ptrPole][temLv] = temId;
+    }
+
+    static void PrnTo(int[][] gridTable) {
+        System.out.println(Arrays.deepToString(gridTable));
+    }
+}
